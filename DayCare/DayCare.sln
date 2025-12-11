@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36127.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCare.API", "DayCare.API\DayCare.API.csproj", "{FDF64FBF-A072-4F4A-ABB2-5B02156FA081}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31130660-9170-4CAB-B897-F5476338C214} = {31130660-9170-4CAB-B897-F5476338C214}
+		{40236F3B-965F-457F-B182-A8F57F96179D} = {40236F3B-965F-457F-B182-A8F57F96179D}
+		{80C52C5C-A673-426E-9363-A35EC24DFC45} = {80C52C5C-A673-426E-9363-A35EC24DFC45}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCare.Domain", "DayCare.Domain\DayCare.Domain.csproj", "{80C52C5C-A673-426E-9363-A35EC24DFC45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCare.Infraestructure", "DayCare.Infraestructure\DayCare.Infraestructure.csproj", "{40236F3B-965F-457F-B182-A8F57F96179D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{80C52C5C-A673-426E-9363-A35EC24DFC45} = {80C52C5C-A673-426E-9363-A35EC24DFC45}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCare.Application", "DayCare.Application\DayCare.Application.csproj", "{31130660-9170-4CAB-B897-F5476338C214}"
+	ProjectSection(ProjectDependencies) = postProject
+		{40236F3B-965F-457F-B182-A8F57F96179D} = {40236F3B-965F-457F-B182-A8F57F96179D}
+		{80C52C5C-A673-426E-9363-A35EC24DFC45} = {80C52C5C-A673-426E-9363-A35EC24DFC45}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDF64FBF-A072-4F4A-ABB2-5B02156FA081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF64FBF-A072-4F4A-ABB2-5B02156FA081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF64FBF-A072-4F4A-ABB2-5B02156FA081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF64FBF-A072-4F4A-ABB2-5B02156FA081}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C52C5C-A673-426E-9363-A35EC24DFC45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C52C5C-A673-426E-9363-A35EC24DFC45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C52C5C-A673-426E-9363-A35EC24DFC45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C52C5C-A673-426E-9363-A35EC24DFC45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40236F3B-965F-457F-B182-A8F57F96179D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40236F3B-965F-457F-B182-A8F57F96179D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40236F3B-965F-457F-B182-A8F57F96179D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40236F3B-965F-457F-B182-A8F57F96179D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31130660-9170-4CAB-B897-F5476338C214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31130660-9170-4CAB-B897-F5476338C214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31130660-9170-4CAB-B897-F5476338C214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31130660-9170-4CAB-B897-F5476338C214}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8FFEE677-E62D-451D-A969-52757F9BA8A6}
+	EndGlobalSection
+EndGlobal

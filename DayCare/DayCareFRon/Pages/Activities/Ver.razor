@@ -1,0 +1,60 @@
+﻿@page "/activities"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject ActivityService ActivityService
+@inject NavigationManager Nav
+
+<h3>Actividades</h3>
+<button class="btn btn-primary" @onclick="Create">Nueva Actividad</button>
+
+@if (activities == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Grupo recomendado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in activities)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.Name</td>
+                    <td>@a.Description</td>
+                    <td>@a.RecommendedGroup</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Edit(a.Id)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Delete(a.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<ActivityDto> activities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        activities = await ActivityService.GetAllAsync();
+    }
+
+    void Create() => Nav.NavigateTo("/activities/create");
+    void Edit(int id) => Nav.NavigateTo($"/activities/edit/{id}");
+
+    async Task Delete(int id)
+    {
+        await ActivityService.DeleteAsync(id);
+        activities = await ActivityService.GetAllAsync();
+    }
+}

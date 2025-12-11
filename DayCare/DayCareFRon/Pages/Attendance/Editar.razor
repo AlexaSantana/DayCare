@@ -1,0 +1,71 @@
+﻿@page "/attendance/edit/{id:int}"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject AttendanceService AttendanceService
+@inject NavigationManager Nav
+
+<h3>Editar Registro de Asistencia</h3>
+
+@if (attendance == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="attendance" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Niño (ID):</label>
+            <InputNumber TValue="int" @bind="attendance.ChildId" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Nombre del Niño:</label>
+            <InputText @bind="attendance.ChildName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Fecha:</label>
+            <InputDate TValue="DateTime" @bind="attendance.Date" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Estado:</label>
+            <InputText @bind="attendance.Status" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Hora de entrada:</label>
+            <InputTime TValue="TimeSpan?" @bind="attendance.CheckInTime" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Hora de salida:</label>
+            <InputTime TValue="TimeSpan?" @bind="attendance.CheckOutTime" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+        <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    AttendanceDto? attendance;
+
+    protected override async Task OnInitializedAsync()
+    {
+        attendance = await AttendanceService.GetByIdAsync(id);
+    }
+
+    async Task Save()
+    {
+        await AttendanceService.UpdateAsync(id, attendance);
+        Nav.NavigateTo("/attendance");
+    }
+
+    void Cancel() => Nav.NavigateTo("/attendance");
+}

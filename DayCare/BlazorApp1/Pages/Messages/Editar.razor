@@ -1,0 +1,65 @@
+﻿@page "/messages/edit/{id:int}"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject MessageService MessageService
+@inject NavigationManager Nav
+
+<h3>Editar Mensaje</h3>
+
+@if (message == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="message" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Título:</label>
+            <InputText class="form-control" @bind-Value="message.Title" />
+        </div>
+
+        <div class="mb-3">
+            <label>Contenido:</label>
+            <InputTextArea class="form-control" @bind-Value="message.Content" rows="3" />
+        </div>
+
+        <div class="mb-3">
+            <label>Tipo de Mensaje:</label>
+            <InputText class="form-control" @bind-Value="message.MessageType" />
+        </div>
+
+        <div class="mb-3">
+            <label>ID del Niño (Opcional):</label>
+            <InputNumber class="form-control" @bind-Value="message.ChildId" />
+        </div>
+
+        <div class="mb-3">
+            <label>Nombre del Niño:</label>
+            <InputText class="form-control" @bind-Value="message.ChildName" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+        <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    MessageDto? message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        message = await MessageService.GetByIdAsync(id);
+    }
+
+    async Task Save()
+    {
+        await MessageService.UpdateAsync(id, message);
+        Nav.NavigateTo("/messages");
+    }
+
+    void Cancel() => Nav.NavigateTo("/messages");
+}

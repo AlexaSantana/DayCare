@@ -1,0 +1,126 @@
+﻿@page "/attendance/create"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject AttendanceService AttendanceService
+@inject NavigationManager Nav
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h3>Nuevo Registro de Asistencia</h3>
+        </div>
+        <div class="card-body">
+            <EditForm Model="attendance" OnValidSubmit="Save">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Niño (ID):</label>
+                        <InputNumber TValue="int" @bind-Value="attendance.ChildId" class="form-control" placeholder="Ingrese el ID del niño" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nombre del Niño:</label>
+                        <InputText @bind-Value="attendance.ChildName" class="form-control" placeholder="Ingrese el nombre completo" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha:</label>
+                        <InputDate TValue="DateTime" @bind-Value="attendance.Date" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Estado:</label>
+                        <InputSelect @bind-Value="attendance.Status" class="form-control">
+                            <option value="">-- Seleccione --</option>
+                            <option value="Presente">Presente</option>
+                            <option value="Ausente">Ausente</option>
+                            <option value="Tardanza">Tardanza</option>
+                            <option value="Justificado">Justificado</option>
+                        </InputSelect>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Hora de Entrada:</label>
+                        <input type="time" class="form-control"
+                               value="@checkInTimeString"
+                               @onchange="@((ChangeEventArgs e) => checkInTimeString = e.Value?.ToString() ?? "")" />
+                        <small class="text-muted">Formato: HH:MM (Ej: 08:30)</small>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Hora de Salida:</label>
+                        <input type="time" class="form-control"
+                               value="@checkOutTimeString"
+                               @onchange="@((ChangeEventArgs e) => checkOutTimeString = e.Value?.ToString() ?? "")" />
+                        <small class="text-muted">Formato: HH:MM (Ej: 17:00)</small>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button class="btn btn-primary me-2" type="submit">
+                        <i class="bi bi-save"></i> Guardar Asistencia
+                    </button>
+                    <button class="btn btn-secondary" type="button" @onclick="Cancel">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private AttendanceDto attendance = new()
+    {
+        Date = DateTime.Now,
+        Status = "Presente"
+    };
+
+    private string checkInTimeString = "";
+    private string checkOutTimeString = "";
+
+    private async Task Save()
+    {
+        try
+        {
+            // Convertir las horas de string a TimeSpan
+            if (!string.IsNullOrWhiteSpace(checkInTimeString))
+            {
+                if (TimeSpan.TryParse(checkInTimeString, out var checkInTime))
+                {
+                    attendance.CheckInTime = checkInTime;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(checkOutTimeString))
+            {
+                if (TimeSpan.TryParse(checkOutTimeString, out var checkOutTime))
+                {
+                    attendance.CheckOutTime = checkOutTime;
+                }
+            }
+
+            // Guardar la asistencia
+            await AttendanceService.CreateAsync(attendance);
+
+            // Navegar de regreso a la lista
+            Nav.NavigateTo("/attendance");
+        }
+        catch (Exception ex)
+        {
+            // Aquí podrías mostrar un mensaje de error al usuario
+            Console.WriteLine($"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private void Cancel()
+    {
+        Nav.NavigateTo("/attendance");
+    }
+}

@@ -23,6 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCare.Application", "DayC
 		{80C52C5C-A673-426E-9363-A35EC24DFC45} = {80C52C5C-A673-426E-9363-A35EC24DFC45}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCareFRon", "DayCareFRon\DayCareFRon.csproj", "{0C666A60-B99D-4172-9704-71C2E20B6B2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{40236F3B-965F-457F-B182-A8F57F96179D} = {40236F3B-965F-457F-B182-A8F57F96179D}
+		{80C52C5C-A673-426E-9363-A35EC24DFC45} = {80C52C5C-A673-426E-9363-A35EC24DFC45}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +51,10 @@ Global
 		{31130660-9170-4CAB-B897-F5476338C214}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31130660-9170-4CAB-B897-F5476338C214}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31130660-9170-4CAB-B897-F5476338C214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C666A60-B99D-4172-9704-71C2E20B6B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C666A60-B99D-4172-9704-71C2E20B6B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C666A60-B99D-4172-9704-71C2E20B6B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C666A60-B99D-4172-9704-71C2E20B6B2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

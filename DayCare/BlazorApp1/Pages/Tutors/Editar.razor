@@ -1,0 +1,60 @@
+﻿@page "/tutors/edit/{id:int}"
+@inject TutorService TutorService
+@inject NavigationManager Nav
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+
+<h3>Editar Tutor</h3>
+
+@if (tutor == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="tutor" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Nombre Completo:</label>
+            <InputText class="form-control" @bind-Value="tutor.FullName" />
+        </div>
+
+        <div class="mb-3">
+            <label>Parentesco:</label>
+            <InputText class="form-control" @bind-Value="tutor.Relationship" />
+        </div>
+
+        <div class="mb-3">
+            <label>Teléfono:</label>
+            <InputText class="form-control" @bind-Value="tutor.PhoneNumber" />
+        </div>
+
+        <div class="mb-3">
+            <label>Email:</label>
+            <InputText class="form-control" @bind-Value="tutor.Email" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+        <button class="btn btn-secondary" @onclick="Cancel">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    TutorDto? tutor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tutor = await TutorService.GetByIdAsync(id);
+    }
+
+    async Task Save()
+    {
+        await TutorService.UpdateAsync(id, tutor);
+        Nav.NavigateTo("/tutors");
+    }
+
+    void Cancel() => Nav.NavigateTo("/tutors");
+}

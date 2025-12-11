@@ -1,0 +1,61 @@
+﻿@page "/attendance/create"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject AttendanceService AttendanceService
+@inject NavigationManager Nav
+
+<h3>Nuevo Registro de Asistencia</h3>
+
+<EditForm Model="attendance" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Niño (ID):</label>
+        <InputNumber TValue="int" @bind="attendance.ChildId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre del Niño:</label>
+        <InputText @bind="attendance.ChildName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha:</label>
+        <InputDate TValue="DateTime" @bind="attendance.Date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Estado:</label>
+        <InputText @bind="attendance.Status" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora de entrada:</label>
+        <InputTime TValue="TimeSpan?" @bind="attendance.CheckInTime" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora de salida:</label>
+        <InputTime TValue="TimeSpan?" @bind="attendance.CheckOutTime" class="form-control" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancelar</button>
+</EditForm>
+
+@code {
+    AttendanceDto attendance = new()
+    {
+        Date = DateTime.Now,
+        Status = "Presente"
+    };
+
+    async Task Save()
+    {
+        await AttendanceService.CreateAsync(attendance);
+        Nav.NavigateTo("/attendance");
+    }
+
+    void Cancel() => Nav.NavigateTo("/attendance");
+}

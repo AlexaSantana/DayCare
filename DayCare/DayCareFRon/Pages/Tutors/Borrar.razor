@@ -1,0 +1,22 @@
+﻿@page "/tutors/delete/{id:int}"
+@using DayCareFRon.Frontend
+@inject TutorService TutorService
+@inject NavigationManager Nav
+
+<h3>Eliminar Tutor</h3>
+<p>¿Estás seguro que deseas eliminar este tutor?</p>
+
+<button class="btn btn-danger" @onclick="Delete">Eliminar</button>
+<button class="btn btn-secondary" @onclick="Cancel">Cancelar</button>
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    async Task Delete()
+    {
+        await TutorService.DeleteAsync(id);
+        Nav.NavigateTo("/tutors");
+    }
+
+    void Cancel() => Nav.NavigateTo("/tutors");
+}

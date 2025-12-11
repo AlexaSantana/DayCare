@@ -20,13 +20,13 @@ namespace DayCare.Application.Services
                 .Include(a => a.Child)
                 .Select(a => new AttendanceDto
                 {
-                    Id = a.Id,
+                    
                     ChildId = a.ChildId,
                     ChildName = a.Child.FullName,
                     Date = a.Date,
                     Status = a.Status,
                     CheckInTime = a.CheckInTime,
-                    CheckOutTime = a.CheckOutTime
+                    CheckOutTime = a.CheckOutTime,
                 }).ToListAsync();
         }
 
@@ -40,7 +40,7 @@ namespace DayCare.Application.Services
 
             return new AttendanceDto
             {
-                Id = a.Id,
+               
                 ChildId = a.ChildId,
                 ChildName = a.Child.FullName,
                 Date = a.Date,
@@ -70,7 +70,7 @@ namespace DayCare.Application.Services
 
             return new AttendanceDto
             {
-                Id = a.Id,
+                
                 ChildId = a.ChildId,
                 ChildName = child.FullName,
                 Date = a.Date,

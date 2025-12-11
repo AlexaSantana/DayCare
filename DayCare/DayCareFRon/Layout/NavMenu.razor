@@ -1,0 +1,64 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">DayCare</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+
+
+<li class="nav-item px-3">
+    <NavLink class="nav-link" href="/tutors">
+        <span class="oi oi-people"></span> Tutors
+    </NavLink>
+</li>
+
+<li class="nav-item px-3">
+    <NavLink class="nav-link" href="/activities">
+        <span class="oi oi-people"></span> Activities
+    </NavLink>
+</li>
+
+
+<li class="nav-item px-3">
+    <NavLink class="nav-link" href="/attendance">
+        <span class="oi oi-people"></span> Attendance
+    </NavLink>
+</li>
+
+<li class="nav-item px-3">
+    <NavLink class="nav-link" href="/children">
+        <span class="oi oi-people"></span> Child
+    </NavLink>
+</li>
+
+<li class="nav-item px-3">
+    <NavLink class="nav-link" href="/messages">
+        <span class="oi oi-people"></span> Message
+    </NavLink>
+</li>
+
+
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

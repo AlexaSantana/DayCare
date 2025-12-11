@@ -1,0 +1,62 @@
+﻿@page "/tutors"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject TutorService TutorService
+@inject NavigationManager Nav
+
+<h3>Tutores</h3>
+<button class="btn btn-primary" @onclick="Create">Nuevo Tutor</button>
+
+@if (tutors == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Parentesco</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in tutors)
+            {
+                <tr>
+                    <td>@t.Id</td>
+                    <td>@t.FullName</td>
+                    <td>@t.Relationship</td>
+                    <td>@t.PhoneNumber</td>
+                    <td>@t.Email</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Edit(t.Id)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Delete(t.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<TutorDto> tutors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tutors = await TutorService.GetAllAsync();
+    }
+
+    void Create() => Nav.NavigateTo("/tutors/create");
+    void Edit(int id) => Nav.NavigateTo($"/tutors/edit/{id}");
+
+    async Task Delete(int id)
+    {
+        await TutorService.DeleteAsync(id);
+        tutors = await TutorService.GetAllAsync();
+    }
+}

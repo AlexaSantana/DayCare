@@ -6,7 +6,16 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DayCareDbContext>(
-                opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DayCareConnection")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazor",
+        policy => policy
+            .WithOrigins("https://localhost:7264") // Aquí debe ir la URL de tu Blazor
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 builder.Services.AddScoped<ITutorService, TutorService>();
 builder.Services.AddScoped<IChildService, ChildService>();
@@ -31,7 +40,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
+app.UseCors("AllowBlazor");
 app.MapControllers();
 
 app.Run();

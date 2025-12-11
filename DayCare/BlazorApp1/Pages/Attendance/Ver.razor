@@ -1,0 +1,64 @@
+﻿@page "/attendance"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject AttendanceService AttendanceService
+@inject NavigationManager Nav
+
+<h3>Asistencias</h3>
+<button class="btn btn-primary" @onclick="Create">Nuevo Registro</button>
+
+@if (attendances == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Niño</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in attendances)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.ChildName</td>
+                    <td>@a.Date.ToShortDateString()</td>
+                    <td>@a.Status</td>
+                    <td>@a.CheckInTime?.ToString(@"hh\:mm")</td>
+                    <td>@a.CheckOutTime?.ToString(@"hh\:mm")</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Edit(a.Id)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Delete(a.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<AttendanceDto> attendances;
+
+    protected override async Task OnInitializedAsync()
+    {
+        attendances = await AttendanceService.GetAllAsync();
+    }
+
+    void Create() => Nav.NavigateTo("/attendance/create");
+    void Edit(int id) => Nav.NavigateTo($"/attendance/edit/{id}");
+
+    async Task Delete(int id)
+    {
+        await AttendanceService.DeleteAsync(id);
+        attendances = await AttendanceService.GetAllAsync();
+    }
+}

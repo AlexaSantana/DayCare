@@ -1,0 +1,23 @@
+﻿@page "/children/delete/{id:int}"
+@using DayCareFRon.Frontend
+@inject ChildService ChildService
+@inject NavigationManager Nav
+
+<h3>Eliminar Niño</h3>
+
+<p>¿Seguro que deseas eliminar este registro?</p>
+
+<button class="btn btn-danger" @onclick="Delete">Sí, eliminar</button>
+<button class="btn btn-secondary" @onclick="Cancel">Cancelar</button>
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    async Task Delete()
+    {
+        await ChildService.DeleteAsync(id);
+        Nav.NavigateTo("/children");
+    }
+
+    void Cancel() => Nav.NavigateTo("/children");
+}

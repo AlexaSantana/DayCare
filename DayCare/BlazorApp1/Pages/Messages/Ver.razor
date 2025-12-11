@@ -1,0 +1,62 @@
+﻿@page "/messages"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject MessageService MessageService
+@inject NavigationManager Nav
+
+<h3>Mensajes</h3>
+<button class="btn btn-primary" @onclick="Create">Nuevo Mensaje</button>
+
+@if (messages == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Título</th>
+                <th>Tipo</th>
+                <th>Niño</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in messages)
+            {
+                <tr>
+                    <td>@m.Id</td>
+                    <td>@m.SentDate.ToShortDateString()</td>
+                    <td>@m.Title</td>
+                    <td>@m.MessageType</td>
+                    <td>@m.ChildName</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Edit(m.Id)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Delete(m.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<MessageDto> messages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messages = await MessageService.GetAllAsync();
+    }
+
+    void Create() => Nav.NavigateTo("/messages/create");
+    void Edit(int id) => Nav.NavigateTo($"/messages/edit/{id}");
+
+    async Task Delete(int id)
+    {
+        await MessageService.DeleteAsync(id);
+        messages = await MessageService.GetAllAsync();
+    }
+}

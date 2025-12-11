@@ -1,0 +1,65 @@
+﻿@page "/children/edit/{id:int}"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject ChildService ChildService
+@inject NavigationManager Nav
+
+<h3>Editar Niño</h3>
+
+@if (child == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="child" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Nombre Completo:</label>
+            <InputText class="form-control" @bind-Value="child.FullName" />
+        </div>
+
+        <div class="mb-3">
+            <label>Fecha de Nacimiento:</label>
+            <InputDate class="form-control" @bind-Value="child.BirthDate" />
+        </div>
+
+        <div class="mb-3">
+            <label>Grupo:</label>
+            <InputText class="form-control" @bind-Value="child.GroupName" />
+        </div>
+
+        <div class="mb-3">
+            <label>ID Tutor:</label>
+            <InputNumber class="form-control" @bind-Value="child.TutorId" />
+        </div>
+
+        <div class="mb-3">
+            <label>Nombre del Tutor:</label>
+            <InputText class="form-control" @bind-Value="child.TutorName" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+        <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    ChildDto? child;
+
+    protected override async Task OnInitializedAsync()
+    {
+        child = await ChildService.GetByIdAsync(id);
+    }
+
+    async Task Save()
+    {
+        await ChildService.UpdateAsync(id, child);
+        Nav.NavigateTo("/children");
+    }
+
+    void Cancel() => Nav.NavigateTo("/children");
+}

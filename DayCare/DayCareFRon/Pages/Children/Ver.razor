@@ -1,0 +1,62 @@
+﻿@page "/children"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject ChildService ChildService
+@inject NavigationManager Nav
+
+<h3>Niños</h3>
+<button class="btn btn-primary" @onclick="Create">Nuevo Niño</button>
+
+@if (children == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Grupo</th>
+                <th>Tutor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in children)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.FullName</td>
+                    <td>@c.BirthDate.ToShortDateString()</td>
+                    <td>@c.GroupName</td>
+                    <td>@c.TutorName</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Edit(c.Id)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Delete(c.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<ChildDto> children;
+
+    protected override async Task OnInitializedAsync()
+    {
+        children = await ChildService.GetAllAsync();
+    }
+
+    void Create() => Nav.NavigateTo("/children/create");
+    void Edit(int id) => Nav.NavigateTo($"/children/edit/{id}");
+
+    async Task Delete(int id)
+    {
+        await ChildService.DeleteAsync(id);
+        children = await ChildService.GetAllAsync();
+    }
+}

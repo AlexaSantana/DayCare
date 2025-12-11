@@ -1,0 +1,55 @@
+﻿@page "/activities/edit/{id:int}"
+@using DayCare.Application.DTOs
+@using DayCareFRon.Frontend
+@inject ActivityService ActivityService
+@inject NavigationManager Nav
+
+<h3>Editar Actividad</h3>
+
+@if (activity == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="activity" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Nombre:</label>
+            <InputText class="form-control" @bind-Value="activity.Name" />
+        </div>
+
+        <div class="mb-3">
+            <label>Descripción:</label>
+            <InputTextArea class="form-control" @bind-Value="activity.Description" rows="3" />
+        </div>
+
+        <div class="mb-3">
+            <label>Grupo recomendado:</label>
+            <InputText class="form-control" @bind-Value="activity.RecommendedGroup" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+        <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    ActivityDto? activity;
+
+    protected override async Task OnInitializedAsync()
+    {
+        activity = await ActivityService.GetByIdAsync(id);
+    }
+
+    async Task Save()
+    {
+        await ActivityService.UpdateAsync(id, activity);
+        Nav.NavigateTo("/activities");
+    }
+
+    void Cancel() => Nav.NavigateTo("/activities");
+}
